@@ -9,6 +9,7 @@
     id('category-form').addEventListener('submit', search);
   }
 
+  // Get a random joke from the server and display it
   function getJoke() {
     let randomJokeDiv = id("random-joke");
     fetch(MY_SERVER_BASEURL + "/random")
@@ -21,6 +22,7 @@
       });
   }
 
+  // Set up category buttons
   function setUpCategories() {
     let categoryListDiv = id("category-list");
     let response = getCategories();
@@ -33,6 +35,7 @@
     }});
   }
 
+  // Fetch and display jokes from a specific category
   function addCategoryJokes(categoryID, div) {
     div.replaceChildren();
 
@@ -54,7 +57,7 @@
     div.appendChild(jokesList);
   }
 
-
+  // Add a joke to a given div
   function addJoke(jokeDiv, responseObject) {
     let setup = document.createElement("p");
     setup.appendChild(document.createTextNode(responseObject.setup));
@@ -64,6 +67,7 @@
     jokeDiv.appendChild(delivery);
   }
 
+  // Search for jokes by category name
   function search(event) {
     event.preventDefault();
     let categoryName = id('category-input').value.trim();
@@ -88,6 +92,7 @@
     });
   }
 
+  // Submit a new joke to the server
   async function submitJoke(event) {
     event.preventDefault();
     let setup = id('joke-setup').value.trim();
@@ -121,7 +126,6 @@
       if (!resp.ok) throw new Error('Server error: ' + resp.status);
       const newJoke = await resp.json();
       console.log('Created', newJoke);
-      // update UI (clear form, show success, append joke, etc.)
       addCategoryJokes(categoryID, id('form-response'));
       event.target.reset();
     } catch (err) {
@@ -129,6 +133,7 @@
     }
   }
 
+  // Fetch all categories from the server
   async function getCategories() {
     return fetch(MY_SERVER_BASEURL + "/categories")
       .then(checkStatus)
